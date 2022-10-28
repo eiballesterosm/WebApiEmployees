@@ -93,5 +93,35 @@ namespace WebApiEmployees.Controllers
         }
 
 
+        [HttpDelete, Route("api/department/{departmentID}")]
+        public string Delete(int departmentID)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                string query = @"DELETE FROM [dbo].[Departments]
+                                    WHERE[DepartmentID] = " + departmentID;
+
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings[connectionString].ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            command.CommandType = CommandType.Text;
+                            adapter.Fill(dt);
+                        }
+                    }
+                }
+
+                return "Deleted Successfully";
+            }
+            catch (Exception exc)
+            {
+                return "Failed to delete";
+            }
+        }
+
+
     }
 }

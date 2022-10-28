@@ -101,7 +101,7 @@ namespace WebApiEmployees.Controllers
                     }
                 }
 
-                return "Updated sucessfully";
+                return "Updated Successfully";
             }
             catch (Exception exc)
             {
@@ -109,9 +109,33 @@ namespace WebApiEmployees.Controllers
             }
         }
 
-        public string Delete(int employeeId)
+        [HttpDelete, Route("api/employee/{employeeID}")]
+        public string Delete(int employeeID)
         {
-            return string.Empty;
+            try
+            {
+                DataTable dt = new DataTable();
+                string query = @"DELETE FROM [dbo].[Employess]
+                                    WHERE[EmployeeID] = " + employeeID;
+
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings[connectionString].ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            command.CommandType = CommandType.Text;
+                            adapter.Fill(dt);
+                        }
+                    }
+                }
+
+                    return "Deleted Successfully";
+            }
+            catch (Exception exc)
+            {
+                return "Failed to delete";
+            }
         }
 
     }
