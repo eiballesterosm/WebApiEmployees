@@ -1,5 +1,7 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Configuration;
+using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace WebApiEmployees
 {
@@ -22,6 +24,11 @@ namespace WebApiEmployees
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(
                 new MediaTypeHeaderValue("text/html")
             );
+
+            //CORS
+            config.EnableCors(new EnableCorsAttribute(ConfigurationManager.AppSettings["urlEnableCORS"], headers: "*", methods: "*"));
+            //var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["urlEnableCORS"], "*", "*");
+            //config.EnableCors(cors);
         }
     }
 }
